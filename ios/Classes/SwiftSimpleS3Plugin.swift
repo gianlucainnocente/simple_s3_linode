@@ -47,7 +47,7 @@ public class SwiftSimpleS3Plugin: NSObject, FlutterPlugin {
 
         let argsMap = args as! NSDictionary
         if  let filePath = argsMap["filePath"], let s3FolderPath = argsMap["s3FolderPath"], let subRegion = argsMap["subRegion"],
-            let fileName = argsMap["fileName"], let poolID = argsMap["poolID"], let accessControl = argsMap["accessControl"],
+            let fileName = argsMap["fileName"], let accessControl = argsMap["accessControl"],
             let bucketName = argsMap["bucketName"], let region = argsMap["region"], let contentType = argsMap["contentType"] {
 
             let parsedRegion = "\(region)".aws_regionTypeValue
@@ -57,12 +57,13 @@ public class SwiftSimpleS3Plugin: NSObject, FlutterPlugin {
             var acl = AWSS3ObjectCannedACL.unknown
             let acs = accessControl as! Int
 
-            let credentialsProvider = AWSCognitoCredentialsProvider(regionType: parsedRegion(), identityPoolId: poolID as! String)
+
+            //let credentialsProvider = AWSCognitoCredentialsProvider(regionType: parsedRegion(), identityPoolId: poolID as! String)
             
             let awsCredentials: AWSBasicSessionCredentialsProvider = AWSBasicSessionCredentialsProvider.init(accessKey: "O3KFS8JGPV9AZIVGLLF1", secretKey: "4wmtrC3MS6lvCrEl74ZGdJQlg2wZXZ2AzqOS51gU", sessionToken: "")
             
-            let configuration = AWSServiceConfiguration(region: parsedSubRegion(), endpoint: AWSEndpoint.init(url: URL(string: "eu-central-1.linodeobjects.com")), credentialsProvider: awsCredentials)
-
+            let configuration = AWSServiceConfiguration(region: parsedSubRegion(), endpoint: AWSEndpoint.init(url: URL(string: "https://eu-central-1.linodeobjects.com")), credentialsProvider: awsCredentials)
+            
             AWSServiceManager.default().defaultServiceConfiguration = configuration
 
 
