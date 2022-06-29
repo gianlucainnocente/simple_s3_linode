@@ -60,9 +60,9 @@ public class SwiftSimpleS3Plugin: NSObject, FlutterPlugin {
 
             //let credentialsProvider = AWSCognitoCredentialsProvider(regionType: parsedRegion(), identityPoolId: poolID as! String)
             
-            let awsCredentials: AWSBasicSessionCredentialsProvider = AWSBasicSessionCredentialsProvider.init(accessKey: accessKey as? String, secretKey: accessSecret as? String, sessionToken: "")
+            let awsCredentials: AWSBasicSessionCredentialsProvider = AWSBasicSessionCredentialsProvider.init(accessKey: accessKey as! String, secretKey: accessSecret as! String, sessionToken: "")
             
-            let configuration = AWSServiceConfiguration(region: parsedSubRegion(), endpoint: AWSEndpoint.init(url: URL(string: endpoint as? String)), credentialsProvider: awsCredentials)
+            let configuration = AWSServiceConfiguration(region: parsedSubRegion(), endpoint: AWSEndpoint.init(url: URL(string: endpoint as! String)), credentialsProvider: awsCredentials)
             
             AWSServiceManager.default().defaultServiceConfiguration = configuration
 
