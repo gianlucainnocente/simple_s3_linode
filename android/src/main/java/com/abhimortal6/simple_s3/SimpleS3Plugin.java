@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.event.ProgressEvent;
 import com.amazonaws.event.ProgressListener;
@@ -111,11 +112,13 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
         String filePath = call.argument("filePath");
         String s3FolderPath = call.argument("s3FolderPath");
         String fileName = call.argument("fileName");
-        String poolID = call.argument("poolID");
+        String endpoint = call.argument("endpoint");
         String region = call.argument("region");
         String subRegion = call.argument("subRegion");
         String contentType = call.argument("contentType");
         int accessControl = call.argument("accessControl");
+        String accessKey = call.argument("accessKey");
+        String secretKey = call.argument("secretKey");
 
         System.out.println(call.arguments);
 
@@ -125,10 +128,12 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
             Regions parsedRegion = Regions.fromName(region);
             Regions parsedSubRegion = subRegion.length() != 0 ? Regions.fromName(subRegion) : parsedRegion;
 
-            CognitoCredentialsProvider credentialsProvider = new CognitoCredentialsProvider(poolID, parsedRegion, clientConfiguration);
+            //CognitoCredentialsProvider credentialsProvider = new CognitoCredentialsProvider(poolID, parsedRegion, clientConfiguration);
+            BasicAWSCredentials credentialsProvider = new BasicAWSCredentials(accessKey, secretKey);
             TransferNetworkLossHandler.getInstance(mContext.getApplicationContext());
 
             AmazonS3Client amazonS3Client = new AmazonS3Client(credentialsProvider);
+            amazonS3Client.setEndpoint(endpoint);
             amazonS3Client.setRegion(com.amazonaws.regions.Region.getRegion(parsedSubRegion));
 
             transferUtility1 = TransferUtility.builder().context(mContext).awsConfiguration(AWSMobileClient.getInstance().getConfiguration()).s3Client(amazonS3Client).build();
