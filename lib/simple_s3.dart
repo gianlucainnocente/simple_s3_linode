@@ -20,7 +20,9 @@ class SimpleS3 {
   Future<String> uploadFile(
     File file,
     String bucketName,
-    String poolID,
+    String endpoint,
+    String accessKey,
+    String secretKey,
     _AWSRegion region, {
     String s3FolderPath: "",
     String? fileName,
@@ -63,7 +65,9 @@ class SimpleS3 {
     }
 
     args.putIfAbsent("filePath", () => file.path);
-    args.putIfAbsent("poolID", () => poolID);
+    args.putIfAbsent("endpoint", () => endpoint);
+    args.putIfAbsent("accessKey", () => accessKey);
+    args.putIfAbsent("secretKey", () => secretKey);
     args.putIfAbsent("region", () => region.region);
     args.putIfAbsent("bucketName", () => bucketName);
     args.putIfAbsent("fileName", () => fileName);
