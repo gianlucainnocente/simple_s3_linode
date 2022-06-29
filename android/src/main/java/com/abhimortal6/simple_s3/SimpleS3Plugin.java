@@ -16,6 +16,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferNetworkLossHand
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -132,9 +133,9 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
             BasicAWSCredentials credentialsProvider = new BasicAWSCredentials(accessKey, secretKey);
             TransferNetworkLossHandler.getInstance(mContext.getApplicationContext());
 
-            AmazonS3Client amazonS3Client = new AmazonS3Client(credentialsProvider);
+            AmazonS3Client amazonS3Client = new AmazonS3Client(credentialsProvider, Region.getRegion(parsedSubRegion));
             amazonS3Client.setEndpoint(endpoint);
-            amazonS3Client.setRegion(com.amazonaws.regions.Region.getRegion(parsedSubRegion));
+            //amazonS3Client.setRegion(com.amazonaws.regions.Region.getRegion(parsedSubRegion));
 
             transferUtility1 = TransferUtility.builder().context(mContext).awsConfiguration(AWSMobileClient.getInstance().getConfiguration()).s3Client(amazonS3Client).build();
         } catch (Exception e) {
