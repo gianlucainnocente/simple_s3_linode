@@ -100,10 +100,14 @@ public class SwiftSimpleS3Plugin: NSObject, FlutterPlugin {
                 acl = AWSS3ObjectCannedACL.unknown
             }
 
+            print("bucketName \(bucketName)");
+            print("fileName \(fileName)");
+            print("filePath \(filePath)");
 
             uploadRequest.bucket = bucketName as? String
             uploadRequest.contentType = contentType as? String
             uploadRequest.acl = acl
+            
 
             uploadRequest.uploadProgress = { (bytesSent, totalBytesSent,
                           totalBytesExpectedToSend) -> Void in

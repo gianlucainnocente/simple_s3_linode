@@ -56,6 +56,8 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
     public SimpleS3Plugin() {
 
         clientConfiguration = new ClientConfiguration();
+        clientConfiguration.setSocketTimeout(20 * 60 * 1000);
+        clientConfiguration.setConnectionTimeout(20 * 60 * 1000);
     }
 
     public static void registerWith(PluginRegistry.Registrar registrar) {
@@ -133,7 +135,7 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
             BasicAWSCredentials credentialsProvider = new BasicAWSCredentials(accessKey, secretKey);
             TransferNetworkLossHandler.getInstance(mContext.getApplicationContext());
 
-            AmazonS3Client amazonS3Client = new AmazonS3Client(credentialsProvider, Region.getRegion(parsedSubRegion));
+            AmazonS3Client amazonS3Client = new AmazonS3Client(credentialsProvider, Region.getRegion(parsedSubRegion), clientConfiguration);
             amazonS3Client.setEndpoint(endpoint);
             //amazonS3Client.setRegion(com.amazonaws.regions.Region.getRegion(parsedSubRegion));
 
@@ -184,6 +186,9 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
         TransferObserver transferObserver1 = transferUtility1
                 .upload(bucketName, awsPath, new File(filePath), objectMetadata, acl);
 
+        System.out.println("bucketName "+ bucketName);
+        System.out.println("awsPath "+ awsPath);
+        System.out.println("filePath "+ filePath);
 
         transferObserver1.setTransferListener(new Transfer());
     }
