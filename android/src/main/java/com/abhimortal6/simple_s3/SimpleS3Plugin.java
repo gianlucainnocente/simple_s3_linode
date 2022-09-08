@@ -154,6 +154,7 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
         objectMetadata.setContentType(contentType);
 
 
+        System.out.println("SimpleS3Plugin setting ACL");
         try {
             CannedAccessControlList acl;
             switch (accessControl) {
@@ -183,6 +184,9 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
 
 
             }
+
+            System.out.println("SimpleS3Plugin setting ACL success");
+            System.out.println("SimpleS3Plugin uploading");
 
             TransferObserver transferObserver1 = transferUtility1
                     .upload(bucketName, awsPath, new File(filePath), objectMetadata, acl);
