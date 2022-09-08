@@ -154,43 +154,48 @@ public class SimpleS3Plugin implements FlutterPlugin, MethodCallHandler, EventCh
         objectMetadata.setContentType(contentType);
 
 
-        CannedAccessControlList acl;
-        switch (accessControl) {
-            case 1:
-                acl = CannedAccessControlList.Private;
-                break;
-            case 2:
-                acl = CannedAccessControlList.PublicRead;
-                break;
-            case 3:
-                acl = CannedAccessControlList.PublicReadWrite;
-                break;
-            case 4:
-                acl = CannedAccessControlList.AuthenticatedRead;
-                break;
-            case 5:
-                acl = CannedAccessControlList.AwsExecRead;
-                break;
-            case 6:
-                acl = CannedAccessControlList.BucketOwnerRead;
-                break;
-            case 7:
-                acl = CannedAccessControlList.BucketOwnerFullControl;
-                break;
-            default:
-                acl = CannedAccessControlList.PublicRead;
+        try {
+            CannedAccessControlList acl;
+            switch (accessControl) {
+                case 1:
+                    acl = CannedAccessControlList.Private;
+                    break;
+                case 2:
+                    acl = CannedAccessControlList.PublicRead;
+                    break;
+                case 3:
+                    acl = CannedAccessControlList.PublicReadWrite;
+                    break;
+                case 4:
+                    acl = CannedAccessControlList.AuthenticatedRead;
+                    break;
+                case 5:
+                    acl = CannedAccessControlList.AwsExecRead;
+                    break;
+                case 6:
+                    acl = CannedAccessControlList.BucketOwnerRead;
+                    break;
+                case 7:
+                    acl = CannedAccessControlList.BucketOwnerFullControl;
+                    break;
+                default:
+                    acl = CannedAccessControlList.PublicRead;
 
 
+            }
+
+            TransferObserver transferObserver1 = transferUtility1
+                    .upload(bucketName, awsPath, new File(filePath), objectMetadata, acl);
+
+            System.out.println("bucketName "+ bucketName);
+            System.out.println("awsPath "+ awsPath);
+            System.out.println("filePath "+ filePath);
+
+            transferObserver1.setTransferListener(new Transfer());
+        } catch (Exception e) {
+            parentResult.success(false);
+            Log.e(TAG, "onMethodCall upload: exception: " + e.getMessage());
         }
-
-        TransferObserver transferObserver1 = transferUtility1
-                .upload(bucketName, awsPath, new File(filePath), objectMetadata, acl);
-
-        System.out.println("bucketName "+ bucketName);
-        System.out.println("awsPath "+ awsPath);
-        System.out.println("filePath "+ filePath);
-
-        transferObserver1.setTransferListener(new Transfer());
     }
 
 
